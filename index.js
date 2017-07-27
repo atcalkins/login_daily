@@ -26,20 +26,9 @@ app.use(
   })
 );
 
-// Track our views
-app.use((req, res, next) => {
-  console.log(req.session);
 
-  if (!req.session.views) {
-    req.session.views = 0;
-  }
+app.use(require("./login"));
 
-  req.session.views += 1;
-  next();
-});
-
-
-app.use('/another-place', require("./login"));
 
 app.listen(3000, () => {
   console.log(
