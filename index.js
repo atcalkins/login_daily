@@ -12,8 +12,6 @@ app.engine("mustache", mustacheExpress());
 
 // Turn on default template engine
 app.set("view engine", "mustache");
-
-// Set where we store our views
 app.set("views", __dirname + "/views");
 
 // Setup a session store using express-session
@@ -28,6 +26,18 @@ app.use(
 
 
 app.use(require("./login"));
+
+app.use('/', function(req, res) {
+    res.render("login");
+});
+
+app.use(function(req, res, next) {       // Catches access to all other pages
+    if(!req.session.accessToken) {       // requiring a valid access token
+        res.redirect('/login');
+    } else {
+        next();
+    }
+});
 
 
 app.listen(3000, () => {
